@@ -1,5 +1,7 @@
 # kafka_servise
 {{now | dateFormat "DD/MM/YYYY HH:mm:ss"}}
+{{now | strftime('%Y-%m-%d %H:%M:%S')}}
+
 Создайте файл юнита Systemd: Создайте новый файл в директории /etc/systemd/system/, например export_kafka.service, и укажите следующий содержимое:
 plaintext
 
