@@ -1,3 +1,36 @@
+```
+s = """
+"as","v","c","d"
+1,2,3,4
+45,33,22,111
+"""
+def str_to_list_of_dicts(s):
+    # Удаляем лишние пробелы и разбиваем строку на отдельные строки
+    lines = [line.strip() for line in s.strip().split('\n')]
+
+    # Разбиваем первую строку на ключи
+    keys = [key.strip('"') for key in lines[0].split(',')]
+
+    # Инициализируем пустой список для словарей
+    dict_list = []
+
+    # Проходим по оставшимся строкам и создаем словари
+    for line in lines[1:]:
+        values = [value.strip() for value in line.split(',')]
+        if len(values) == len(keys):
+            dict_list.append(dict(zip(keys, values)))
+
+    # Выводим результат
+  
+    return dict_list
+a = str_to_list_of_dicts(s)
+print(a)
+```
+
+
+
+
+
 # kafka_servise
 {{now | dateFormat "DD/MM/YYYY HH:mm:ss"}}
 {{now | strftime('%Y-%m-%d %H:%M:%S')}}
