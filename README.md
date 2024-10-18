@@ -26,7 +26,8 @@ def str_to_list_of_dicts(s):
 a = str_to_list_of_dicts(s)
 print(a)
 ```
-
+https://github.com/docker/awesome-compose/tree/master/django
+https://github.com/bitnami/containers/blob/main/bitnami/redis/docker-compose.yml
 
 
 
