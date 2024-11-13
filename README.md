@@ -1,4 +1,20 @@
 ```
+#!/bin/bash
+
+# Пароль для всех пользователей
+PASSWORD="12345678"
+
+# Создание 20 пользователей
+for i in {1..20}; do
+    USERNAME="user$i"
+    sudo useradd -m -s /bin/bash "$USERNAME"
+    echo "$USERNAME:$PASSWORD" | sudo chpasswd
+done
+
+echo "20 пользователей создано успешно."
+
+```
+```
 s = """
 "as","v","c","d"
 1,2,3,4
