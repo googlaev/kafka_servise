@@ -1,3 +1,40 @@
+```python
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Параметры SMTP-сервера
+smtp_server = 'smtp.example.com'
+smtp_port = 587
+smtp_user = 'your_email@example.com'
+smtp_password = 'your_password'
+
+# Параметры сообщения
+from_email = 'your_email@example.com'
+to_email = 'recipient@example.com'
+subject = 'Test Email'
+body = 'This is a test email sent from Python.'
+
+# Создание сообщения
+msg = MIMEMultipart()
+msg['From'] = from_email
+msg['To'] = to_email
+msg['Subject'] = subject
+msg.attach(MIMEText(body, 'plain'))
+
+# Отправка сообщения
+try:
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()  # Устанавливаем защищенное соединение
+    server.login(smtp_user, smtp_password)
+    server.sendmail(from_email, to_email, msg.as_string())
+    server.quit()
+    print('Email sent successfully')
+except Exception as e:
+    print(f'Failed to send email: {e}')
+
+```
+
 ```
 global:
   scrape_interval: 15s
