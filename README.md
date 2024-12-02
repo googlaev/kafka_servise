@@ -1,4 +1,7 @@
+```
+2024/12/02 11:08:01 Error creating consumer: kafka: client has run out of available brokers to talk to: dial tcp: missing address
 
+```
 ```
 2024/11/15 15:28:47 parsing time "" as "2006-01-02T15:04:05.999": cannot parse "" as "2006"
 
