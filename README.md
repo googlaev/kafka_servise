@@ -1,5 +1,16 @@
 ```
+-- Создание новой таблицы shingindkoe
+CREATE TABLE IF NOT EXISTS shingindkoe (
+    total_count INTEGER,
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
+-- Вставка данных в таблицу shingindkoe для конкретных well_id
+INSERT INTO shingindkoe (total_count, recorded_at)
+SELECT SUM(count) AS total_count, CURRENT_TIMESTAMP
+FROM message_counts
+WHERE timestamp >= NOW() - INTERVAL '10 minutes'
+AND well_id IN (/* Укажите конкретные well_id здесь, например: */ 2540257976, 2540432133);
 
 ```
 
