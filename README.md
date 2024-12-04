@@ -1,4 +1,20 @@
 ```
+-- 1. Создание таблицы vostok
+CREATE TABLE vostok (
+    well_id BIGINT,
+    total_count INTEGER,
+    recorded_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP  -- Поле для хранения текущего времени
+);
+
+-- 2. Вставка значений из запроса с текущим временем
+INSERT INTO vostok (well_id, total_count, recorded_at)
+SELECT well_id, SUM(count) AS total_count, CURRENT_TIMESTAMP
+FROM message_counts
+WHERE timestamp >= NOW() - INTERVAL '10 minutes'
+AND well_id IN (2540257976, 2540432133)  -- Укажите нужные well_id
+GROUP BY well_id;
+```
+```
 docker exec -it my_postgres bash -c "sed -i \"s/^#timezone = 'UTC'/timezone = 'Asia/Yekaterinburg'/\" /var/lib/postgresql/data/postgresql.conf"
 ```
 
