@@ -1,4 +1,9 @@
 ```
+ALTER DATABASE your_database_name SET timezone = 'Asia/Yekaterinburg';
+```
+
+
+```
    SELECT timestamp, count
    FROM message_counts
    ORDER BY timestamp DESC
