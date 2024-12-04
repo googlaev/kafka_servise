@@ -1,4 +1,10 @@
 ```
+   SELECT timestamp, count
+   FROM message_counts
+   ORDER BY timestamp DESC
+   LIMIT 10;
+```
+```
 -- Создание новой таблицы shingindkoe
 CREATE TABLE IF NOT EXISTS shingindkoe (
     total_count INTEGER,
