@@ -1,4 +1,9 @@
 ```
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "postgres" does not exist
+
+```
+
+```
 
 */5 * * * * /home/your_username/run_query.sh
 ```
