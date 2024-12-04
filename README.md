@@ -1,4 +1,10 @@
 ```
+1280718960
+1280719740
+1280721360
+```
+
+```
 -- 1. Создание таблицы vostok
 CREATE TABLE vostok (
     well_id BIGINT,
