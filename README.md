@@ -1,4 +1,8 @@
 ```
+docker exec -it my_postgres bash -c "sed -i \"s/^#timezone = 'UTC'/timezone = 'Asia/Yekaterinburg'/\" /var/lib/postgresql/data/postgresql.conf"
+```
+
+```
 ALTER DATABASE your_database_name SET timezone = 'Asia/Yekaterinburg';
 ```
 
