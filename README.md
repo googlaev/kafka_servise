@@ -1,4 +1,16 @@
 ```
+
+*/5 * * * * /home/your_username/run_query.sh
+```
+```
+   #!/bin/bash
+
+   # Выполнение SQL-запроса в контейнере PostgreSQL
+   docker exec -i my_postgres_container psql -U postgres -d my_database -c "INSERT INTO my_table (column1, column2) VALUES ('value1', 'value2');"
+```
+
+
+```
 SELECT 
     FROM_UNIXTIME(1280718960) AS date1,
     FROM_UNIXTIME(1280719740) AS date2,
