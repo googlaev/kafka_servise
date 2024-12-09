@@ -1,3 +1,24 @@
+```
+CREATE TABLE clusters_and_wells (
+    id SERIAL PRIMARY KEY,
+    cluster_name VARCHAR(255) NOT NULL,
+    well_name VARCHAR(255),
+    field_id INT NOT NULL,
+    FOREIGN KEY (field_id) REFERENCES fields(field_id) ON DELETE CASCADE
+);
+```
+```
+INSERT INTO clusters_and_wells (cluster_name, well_name, field_id) VALUES 
+    ('Cluster 1', 'Well 1', 1),
+    ('Cluster 1', 'Well 2', 1),
+    ('Cluster 2', 'Well 3', 1),
+    ('Cluster 2', 'Well 4', 1),
+    ('Cluster 3', NULL, 1),  -- Куст без скважин
+    ('Cluster 3', 'Well 5', 1);
+```
+
+
+
 2. Объяснение структуры
 companies: Таблица для хранения информации о дочерних обществах. Каждое общество имеет уникальный идентификатор company_id и имя company_name.
 fields: Таблица для хранения месторождений. Каждое месторождение имеет уникальный идентификатор field_id, имя field_name и внешний ключ company_id, который ссылается на таблицу companies.
