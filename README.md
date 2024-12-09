@@ -1,4 +1,20 @@
 ```
+SELECT 
+    w.well_id,
+    w.well_name
+FROM 
+    companies c
+JOIN 
+    fields f ON c.company_id = f.company_id
+JOIN 
+    clusters cl ON f.field_id = cl.field_id
+JOIN 
+    wells_and_clusters w ON cl.cluster_name = w.cluster_name
+WHERE 
+    c.company_name = 'Ямал';
+```
+
+```
 CREATE TABLE wells_and_clusters (
     well_id VARCHAR(50) PRIMARY KEY,      -- Уникальный идентификатор для каждой скважины (текстовый)
     well_name VARCHAR(255) NOT NULL,       -- Название скважины
