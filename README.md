@@ -1,8 +1,33 @@
+Таблица companies (Дочерние общества)
 ```
-psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "postgres" does not exist
-
+CREATE TABLE companies (
+    company_id SERIAL PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL
+);
 ```
-
+Таблица companies (Дочерние общества)
+```
+CREATE TABLE companies (
+    company_id SERIAL PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL
+);
+```
+Таблица clusters (Кусты)
+```
+CREATE TABLE clusters (
+    cluster_id SERIAL PRIMARY KEY,
+    cluster_name VARCHAR(255) NOT NULL,
+    field_id INT REFERENCES fields(field_id) ON DELETE CASCADE
+);
+```
+Таблица wells (Скважины)
+```
+CREATE TABLE wells (
+    well_id SERIAL PRIMARY KEY,
+    well_name VARCHAR(255) NOT NULL,
+    cluster_id INT REFERENCES clusters(cluster_id) ON DELETE CASCADE
+);
+```
 ```
 
 */5 * * * * /home/your_username/run_query.sh
