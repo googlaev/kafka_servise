@@ -1,3 +1,35 @@
+2. Объяснение структуры
+companies: Таблица для хранения информации о дочерних обществах. Каждое общество имеет уникальный идентификатор company_id и имя company_name.
+fields: Таблица для хранения месторождений. Каждое месторождение имеет уникальный идентификатор field_id, имя field_name и внешний ключ company_id, который ссылается на таблицу companies.
+clusters: Таблица для хранения кустов. Каждый куст имеет уникальный идентификатор cluster_id, имя cluster_name и внешний ключ field_id, который ссылается на таблицу fields.
+wells: Таблица для хранения скважин. Каждая скважина имеет уникальный идентификатор well_id, имя well_name и внешний ключ cluster_id, который ссылается на таблицу clusters.
+
+3. Пример вставки данных
+Вот пример, как можно вставить данные в эти таблицы:
+```
+-- Вставка дочерних обществ
+INSERT INTO companies (company_name) VALUES ('Company A');
+INSERT INTO companies (company_name) VALUES ('Company B');
+
+-- Вставка месторождений
+INSERT INTO fields (field_name, company_id) VALUES ('Field 1', 1);
+INSERT INTO fields (field_name, company_id) VALUES ('Field 2', 1);
+INSERT INTO fields (field_name, company_id) VALUES ('Field 3', 2);
+
+-- Вставка кустов
+INSERT INTO clusters (cluster_name, field_id) VALUES ('Cluster 1', 1);
+INSERT INTO clusters (cluster_name, field_id) VALUES ('Cluster 2', 1);
+INSERT INTO clusters (cluster_name, field_id) VALUES ('Cluster 3', 2);
+INSERT INTO clusters (cluster_name, field_id) VALUES ('Cluster 4', 3);
+
+-- Вставка скважин
+INSERT INTO wells (well_name, cluster_id) VALUES ('Well 1', 1);
+INSERT INTO wells (well_name, cluster_id) VALUES ('Well 2', 1);
+INSERT INTO wells (well_name, cluster_id) VALUES ('Well 3', 2);
+INSERT INTO wells (well_name, cluster_id) VALUES ('Well 4', 3);
+INSERT INTO wells (well_name, cluster_id) VALUES ('Well 5', 4);
+```
+
 Таблица companies (Дочерние общества)
 ```
 CREATE TABLE companies (
