@@ -1,4 +1,13 @@
 ```
+CREATE TABLE wells_and_clusters (
+    well_id VARCHAR(50) PRIMARY KEY,      -- Уникальный идентификатор для каждой скважины (текстовый)
+    well_name VARCHAR(255) NOT NULL,       -- Название скважины
+    cluster_name VARCHAR(255) NOT NULL,     -- Название куста
+    field_name VARCHAR(255) NOT NULL        -- Название месторождения
+);
+```
+
+```
 CREATE TABLE clusters_and_wells (
     id SERIAL PRIMARY KEY,
     cluster_name VARCHAR(255) NOT NULL,
