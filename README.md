@@ -37,11 +37,12 @@ CREATE TABLE companies (
     company_name VARCHAR(255) NOT NULL
 );
 ```
-Таблица companies (Дочерние общества)
+Таблица fields (Месторождения)
 ```
-CREATE TABLE companies (
-    company_id SERIAL PRIMARY KEY,
-    company_name VARCHAR(255) NOT NULL
+CREATE TABLE fields (
+    field_id SERIAL PRIMARY KEY,
+    field_name VARCHAR(255) NOT NULL,
+    company_id INT REFERENCES companies(company_id) ON DELETE CASCADE
 );
 ```
 Таблица clusters (Кусты)
