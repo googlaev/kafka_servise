@@ -1,17 +1,15 @@
 ```
 SELECT 
-    w.well_id,
+    w.well_id, 
     w.well_name
 FROM 
-    companies c
+    wells_and_clusters w
 JOIN 
-    fields f ON c.company_id = f.company_id
+    fields f ON w.field_name = f.field_name
 JOIN 
-    clusters cl ON f.field_id = cl.field_id
-JOIN 
-    wells_and_clusters w ON cl.cluster_name = w.cluster_name
+    companies c ON f.company_id = c.company_id
 WHERE 
-    c.company_name = 'Ямал';
+    c.company_id = $1;  -- Замените $1 на нужный идентификатор дочернего общества
 ```
 
 ```
