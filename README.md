@@ -1,4 +1,17 @@
 ```
+-- напиши запрос что бы выводил список wellid и имя скавыажины по названию месторождения
+SELECT 
+    w.well_id, 
+    w.well_name
+FROM 
+    wells_and_clusters w
+JOIN 
+    fields f ON w.field_name = f.field_name
+WHERE 
+    f.field_name = $1;  -- Замените $1 на нужное название месторождения
+```
+```
+-- с выводящий название скважин и wellid по указаному дочернему обществу
 SELECT 
     w.well_id, 
     w.well_name
