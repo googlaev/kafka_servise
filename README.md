@@ -1,4 +1,10 @@
 ```
+ERROR:  operator does not exist: bigint = character varying
+LINE 5: AND well_id IN (
+                    ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts. 
+```
+```
 INSERT INTO nng (well_id, total_count, recorded_at)
 SELECT well_id, SUM(count) AS total_count, CURRENT_TIMESTAMP
 FROM message_counts
