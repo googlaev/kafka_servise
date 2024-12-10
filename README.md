@@ -1,4 +1,27 @@
 ```
+INSERT INTO nng (well_id, total_count, recorded_at)
+SELECT well_id, SUM(count) AS total_count, CURRENT_TIMESTAMP
+FROM message_counts
+WHERE timestamp >= NOW() - INTERVAL '10 minutes'
+AND well_id IN (
+SELECT 
+    w.well_id 
+   
+FROM 
+    wells_and_clusters w
+JOIN 
+    fields f ON w.field_name = f.field_name
+JOIN 
+    companies c ON f.company_id = c.company_id
+WHERE 
+    c.company_id = 3  -- Замените $1 на нужный идентификатор дочернего общества
+)  -- Укажите нужные well_id
+GROUP BY well_id;
+
+```
+
+
+```
 -- напиши запрос что бы выводил список wellid и имя скавыажины по названию месторождения
 SELECT 
     w.well_id, 
