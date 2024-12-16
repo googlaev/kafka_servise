@@ -1,4 +1,13 @@
 ```
+SELECT well_id, parameter_id, count, "timestamp"
+	FROM public.message_counts
+
+	WHERE timestamp >= NOW() - INTERVAL '45 minutes'
+		
+```
+
+
+```
 #!/bin/bash
 ```
 ```
