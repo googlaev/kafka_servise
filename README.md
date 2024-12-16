@@ -1,3 +1,28 @@
+## Удаление данных раз в 6 часов
+```sudo nano /etc/systemd/system/my-script.service```
+```
+[Unit]
+Description=My Script Service
+
+[Service]
+Type=oneshot
+ExecStart=/path/to/your/script.sh
+```
+```sudo nano /etc/systemd/system/my-script.timer ```
+```
+[Unit]
+Description=Run My Script Every 6 Hours
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=6h
+Unit=my-script.service
+
+[Install]
+WantedBy=timers.target
+```
+
+## Выставка данных раз в 10 минут
 ```
 [Unit]
 Description=My Script Service
