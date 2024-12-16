@@ -1,9 +1,24 @@
 ```
-ERROR:  operator does not exist: bigint = character varying
-LINE 5: AND well_id IN (
-                    ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts. 
+[Unit]
+Description=My Script Service
+
+[Service]
+Type=oneshot
+ExecStart=/home/user/myscript.sh
 ```
+```
+[Unit]
+Description=Run My Script Every 10 Minutes
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=10min
+Unit=my-script.service
+
+[Install]
+WantedBy=timers.target
+```
+
 ```
 INSERT INTO nng (well_id, total_count, recorded_at)
 SELECT well_id, SUM(count) AS total_count, CURRENT_TIMESTAMP
