@@ -1,3 +1,12 @@
+```
+systemctl list-timers
+```
+```
+sudo systemctl daemon-reload
+sudo systemctl enable my-script.timer
+sudo systemctl start my-script.timer
+```
+
 ## Удаление данных раз в 6 часов
 ```sudo nano /etc/systemd/system/my-script.service```
 ```
