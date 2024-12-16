@@ -1,4 +1,11 @@
 ```
+дек 16 11:39:15 localhost.localdomain systemd[1]: insert_db.service: Failed with result 'exit-code'.
+дек 16 11:39:15 localhost.localdomain systemd[1]: Failed to start insert_db.service - insert_db.
+дек 16 11:50:01 localhost.localdomain (rt_do.sh)[12982]: insert_db.service: Failed to execute /var/service/kafka_redis/script_db/insert_do/insert_do.sh: Exec format error
+дек 16 11:50:01 localhost.localdomain (rt_do.sh)[12982]: insert_db.service: Failed at step EXEC spawning /var/service/kafka_redis/script_db/insert_do/insert_do.sh: Exec format error
+
+```
+```
 systemctl list-timers
 ```
 ```
