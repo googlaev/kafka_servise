@@ -3,6 +3,63 @@ WITH aggregated_counts AS (
     SELECT 
         well_id, 
         SUM(count) AS total_count, 
+        "timestamp" AS recorded_at,
+        CASE 
+            WHEN c.company_id = 1 THEN 'vostok'
+            WHEN c.company_id = 2 THEN 'orenburg'
+            WHEN c.company_id = 3 THEN 'zapolare'
+			WHEN c.company_id = 4 THEN 'hantos'
+			WHEN c.company_id = 7 THEN 'messoyaha'
+			WHEN c.company_id = 8 THEN 'yamal'
+			WHEN c.company_id = 9 THEN 'meretoyaha'
+			WHEN c.company_id = 10 THEN 'nng'
+        END AS target_table
+    FROM 
+        message_counts mc
+    JOIN 
+        wells_and_clusters w ON mc.well_id = w.well_id
+    JOIN 
+        fields f ON w.field_name = f.field_name
+    JOIN 
+        companies c ON f.company_id = c.company_id
+    WHERE 
+        mc.timestamp >= NOW() - INTERVAL '10 minutes'
+        AND c.company_id IN (1,2,3,4,5,8,9,10)  -- Замените на нужные идентификаторы дочерних обществ
+    GROUP BY 
+        well_id, c.company_id
+)
+INSERT INTO nng (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'vostok'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'orenburg'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'zapolare'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'hantos'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'messoyaha'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'yamal'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'meretoyaha'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'nng';
+```
+
+
+```
+ERROR:  operator does not exist: bigint = character varying
+LINE 19:         wells_and_clusters w ON mc.well_id = w.well_id
+                                                    ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts. 
+```
+
+
+```
+WITH aggregated_counts AS (
+    SELECT 
+        well_id, 
+        SUM(count) AS total_count, 
         CURRENT_TIMESTAMP AS recorded_at,
         CASE 
             WHEN c.company_id = 3 THEN 'nng'
