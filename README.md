@@ -3,6 +3,28 @@ SELECT
     DATE_TRUNC('minute', recorded_at) AS minute,  -- Округляем время до минуты
     SUM(total_count) AS total_count_sum            -- Суммируем total_count
 FROM
+    hantos 
+WHERE
+    well_id IN (
+        SELECT
+            CAST(w.well_id AS bigint)
+        FROM
+            wells_and_clusters w
+            JOIN fields f ON w.field_name = f.field_name
+        WHERE
+            f.field_name = 'Зимнее'  -- Замените на нужное название месторождения
+    )
+GROUP BY
+    minute  -- Группируем по округленному времени
+ORDER BY
+    minute;  -- Сортируем по времени
+```	
+
+```
+SELECT
+    DATE_TRUNC('minute', recorded_at) AS minute,  -- Округляем время до минуты
+    SUM(total_count) AS total_count_sum            -- Суммируем total_count
+FROM
     hantos
 WHERE
     recorded_at >= NOW() - INTERVAL '10 minutes'  -- Фильтруем записи за последние 10 минут
