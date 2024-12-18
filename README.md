@@ -1,4 +1,21 @@
 ```
+дек 18 10:00:21 localhost.localdomain crond[2651005]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651007]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651009]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651027]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651031]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651033]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651035]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:00:21 localhost.localdomain crond[2651037]: No configuration file found at /root/.esmtprc or /etc/esmtprc
+дек 18 10:01:01 localhost.localdomain CROND[2651118]: (root) CMD (run-parts /etc/cron.hourly)
+дек 18 10:01:01 localhost.localdomain run-parts[2651121]: (/etc/cron.hourly) starting 0anacron
+дек 18 10:01:01 localhost.localdomain run-parts[2651127]: (/etc/cron.hourly) finished 0anacron
+дек 18 10:01:01 localhost.localdomain CROND[2651117]: (root) CMDEND (run-parts /etc/cron.hourly)
+lines 45753-45802/45802 (END)
+
+```
+
+```
 SELECT well_id, parameter_id, count, "timestamp"
 	FROM public.message_counts
 
