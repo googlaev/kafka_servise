@@ -1,4 +1,17 @@
 ```
+SELECT
+    DATE_TRUNC('minute', recorded_at) AS minute,  -- Округляем время до минуты
+    SUM(total_count) AS total_count_sum            -- Суммируем total_count
+FROM
+    hantos
+WHERE
+    recorded_at >= NOW() - INTERVAL '10 minutes'  -- Фильтруем записи за последние 10 минут
+GROUP BY
+    minute  -- Группируем по округленному времени
+ORDER BY
+    minute;  -- Сортируем по времени
+```
+```
 WITH ranked_counts AS (
     SELECT
         recorded_at,
