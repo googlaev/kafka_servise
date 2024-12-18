@@ -1,4 +1,35 @@
 ```
+WITH last_three_sums AS (
+    SELECT
+        recorded_at,
+        SUM(total_count) AS total_count
+    FROM
+        hantos 
+    WHERE
+        well_id IN (
+            SELECT
+                CAST(w.well_id AS bigint)
+            FROM
+                wells_and_clusters w
+                JOIN fields f ON w.field_name = f.field_name
+            WHERE
+                f.field_name = 'Зимнее' -- Замените на нужное название месторождения
+        )
+    GROUP BY
+        recorded_at
+    ORDER BY
+        recorded_at DESC
+    LIMIT 3  -- Получаем последние 3 записи
+)
+
+SELECT
+    AVG(total_count) AS average_last_three_sums  -- Вычисляем среднее значение
+FROM
+    last_three_sums;
+```
+
+
+```
 SELECT
   SUM(total_count) AS "Зимнее",
   recorded_at
