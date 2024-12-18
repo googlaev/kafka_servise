@@ -1,4 +1,37 @@
 ```
+WITH aggregated_counts AS (
+    SELECT 
+        mc.well_id, 
+        SUM(mc.count) AS total_count, 
+        MAX(mc.timestamp) AS recorded_at,  -- Используем MAX для получения последнего timestamp
+        c.company_id
+    FROM 
+        message_counts mc
+    JOIN 
+        wells_and_clusters w ON mc.well_id::text = w.well_id
+    JOIN 
+        fields f ON w.field_name = f.field_name
+    JOIN 
+        companies c ON f.company_id = c.company_id
+    WHERE 
+        mc.timestamp >= NOW() - INTERVAL '10 minutes'
+        AND c.company_id IN (1, 2, 3, 4, 5, 8, 9, 10)
+    GROUP BY 
+        mc.well_id, c.company_id
+)
+INSERT INTO nng (well_id, total_count, recorded_at)
+SELECT 
+    well_id, 
+    total_count, 
+    recorded_at
+FROM 
+    aggregated_counts
+WHERE 
+    company_id IN (1, 2, 3, 4, 5, 8, 9, 10);
+```
+
+
+```
 ERROR:  column "mc.timestamp" must appear in the GROUP BY clause or be used in an aggregate function
 LINE 5:         mc.timestamp AS recorded_at,
                 ^ 
