@@ -1,3 +1,9 @@
+```
+   */10 * * * * /var/service/kafka_redis/script_db/insert_do/insert_do.sh >> /var/service/kafka_redis/logs/insert_do.log 2>&1
+   0 0 * * 3 /var/service/kafka_redis/script_db/delete_do_7days/script.sh >> /var/service/kafka_redis/logs/delete_do.log 2>&1
+   0 */4 * * * /var/service/kafka_redis/script_db/delete_message_counts_6_hours/script.sh >> /var/service/kafka_redis/logs/delete_message_counts.log 2>&1
+```
+
 ```                                                                               /tmp/crontab.90EHEB                                                                                             
 */10 * * * * /var/service/kafka_redis/script_db/insert_do/insert_do.sh
 0 0 * * 3 /var/service/kafka_redis/script_db/delete_do_7days/script.sh
