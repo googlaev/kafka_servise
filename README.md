@@ -1,4 +1,37 @@
 ```
+WITH aggregated_counts AS (
+    SELECT 
+        well_id, 
+        SUM(count) AS total_count, 
+        CURRENT_TIMESTAMP AS recorded_at,
+        CASE 
+            WHEN c.company_id = 3 THEN 'nng'
+            WHEN c.company_id = 4 THEN 'yamal'
+            WHEN c.company_id = 5 THEN 'orenburg'
+        END AS target_table
+    FROM 
+        message_counts mc
+    JOIN 
+        wells_and_clusters w ON mc.well_id = w.well_id
+    JOIN 
+        fields f ON w.field_name = f.field_name
+    JOIN 
+        companies c ON f.company_id = c.company_id
+    WHERE 
+        mc.timestamp >= NOW() - INTERVAL '10 minutes'
+        AND c.company_id IN (3, 4, 5)  -- Замените на нужные идентификаторы дочерних обществ
+    GROUP BY 
+        well_id, c.company_id
+)
+INSERT INTO nng (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'nng'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'yamal'
+UNION ALL
+SELECT well_id, total_count, recorded_at FROM aggregated_counts WHERE target_table = 'orenburg';
+```
+
+```
    */10 * * * * /var/service/kafka_redis/script_db/insert_do/insert_do.sh >> /var/service/kafka_redis/logs/insert_do.log 2>&1
    0 0 * * 3 /var/service/kafka_redis/script_db/delete_do_7days/script.sh >> /var/service/kafka_redis/logs/delete_do.log 2>&1
    0 */4 * * * /var/service/kafka_redis/script_db/delete_message_counts_6_hours/script.sh >> /var/service/kafka_redis/logs/delete_message_counts.log 2>&1
