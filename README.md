@@ -1,4 +1,13 @@
 ```
+ERROR:  column "mc.timestamp" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 5:         mc.timestamp AS recorded_at,
+                ^ 
+
+SQL-состояние: 42803
+```
+
+
+```
 WITH aggregated_counts AS (
     SELECT 
         mc.well_id, 
