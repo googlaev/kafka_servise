@@ -1,4 +1,31 @@
 ```
+WITH ranked_counts AS (
+    SELECT
+        recorded_at,
+        total_count,
+        ROW_NUMBER() OVER (ORDER BY recorded_at DESC) AS rn
+    FROM (
+        SELECT
+            recorded_at,
+            SUM(total_count) AS total_count
+        FROM
+            hantos
+        GROUP BY
+            recorded_at
+    ) AS aggregated_counts
+)
+
+SELECT
+    MAX(recorded_at) AS last_recorded_at,  -- Получаем последнее recorded_at
+    AVG(total_count) AS average_last_three  -- Вычисляем среднее значение
+FROM
+    ranked_counts
+WHERE
+    rn <= 3  -- Берем только последние 3 записи
+GROUP BY
+    recorded_at;  -- Группируем по recorded_at, если нужно
+```
+```
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
