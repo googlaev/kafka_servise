@@ -1,3 +1,10 @@
+```                                                                               /tmp/crontab.90EHEB                                                                                             
+*/10 * * * * /var/service/kafka_redis/script_db/insert_do/insert_do.sh
+0 0 * * 3 /var/service/kafka_redis/script_db/delete_do_7days/script.sh
+0 */4 * * * /var/service/kafka_redis/script_db/delete_message_counts_6_hours/script.sh
+
+
+```
 ```
 дек 18 10:00:21 localhost.localdomain crond[2651005]: No configuration file found at /root/.esmtprc or /etc/esmtprc
 дек 18 10:00:21 localhost.localdomain crond[2651007]: No configuration file found at /root/.esmtprc or /etc/esmtprc
