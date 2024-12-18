@@ -1,4 +1,47 @@
 ```
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Настройки
+smtp_server = 'smtp.example.com'  # Замените на адрес вашего SMTP-сервера
+smtp_port = 587                     # Обычно 587 для TLS
+smtp_user = 'your_email@example.com'  # Ваш email
+smtp_password = 'your_password'     # Ваш пароль
+
+# Создание сообщения
+sender_email = smtp_user
+receiver_email = 'recipient@example.com'  # Замените на адрес получателя
+subject = 'Тема сообщения'
+body = 'Это тело сообщения.'
+
+# Создание объекта сообщения
+msg = MIMEMultipart()
+msg['From'] = sender_email
+msg['To'] = receiver_email
+msg['Subject'] = subject
+
+# Добавление текста сообщения
+msg.attach(MIMEText(body, 'plain'))
+
+try:
+    # Подключение к SMTP-серверу
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()  # Включение TLS
+    server.login(smtp_user, smtp_password)  # Вход на сервер
+
+    # Отправка сообщения
+    server.sendmail(sender_email, receiver_email, msg.as_string())
+    print('Email успешно отправлен!')
+
+except Exception as e:
+    print(f'Ошибка при отправке email: {e}')
+
+finally:
+    server.quit()  # Закрытие соединения
+```
+
+```
 WITH last_three_sums AS (
     SELECT
         recorded_at,
