@@ -1,4 +1,87 @@
 ```
+-- Создание временной таблицы
+CREATE TEMP TABLE temp_aggregated_counts (
+    well_id BIGINT,
+    total_count INT,
+    recorded_at TIMESTAMP,
+    company_id INT
+);
+
+-- Заполнение временной таблицы
+INSERT INTO temp_aggregated_counts (well_id, total_count, recorded_at, company_id)
+WITH aggregated_counts AS (
+    SELECT 
+        mc.well_id, 
+        SUM(mc.count) AS total_count, 
+        MAX(mc.timestamp) AS recorded_at,
+        c.company_id
+    FROM 
+        message_counts mc
+    JOIN 
+        wells_and_clusters w ON mc.well_id::text = w.well_id
+    JOIN 
+        fields f ON w.field_name = f.field_name
+    JOIN 
+        companies c ON f.company_id = c.company_id
+    WHERE 
+        mc.timestamp >= NOW() - INTERVAL '10 minutes'
+        AND c.company_id IN (1, 2, 3, 4, 5, 7, 8, 9, 10)
+    GROUP BY 
+        mc.well_id, c.company_id
+)
+SELECT well_id, total_count, recorded_at, company_id FROM aggregated_counts;
+
+-- Вставка в таблицу 'vostok'
+INSERT INTO vostok (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 1;
+
+-- Вставка в таблицу 'orenburg'
+INSERT INTO orenburg (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 2;
+
+-- Вставка в таблицу 'zapolare'
+INSERT INTO zapolare (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 3;
+
+-- Вставка в таблицу 'hantos'
+INSERT INTO hantos (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 4;
+
+-- Вставка в таблицу 'messoyaha'
+INSERT INTO messoyaha (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 7;
+
+-- Вставка в таблицу 'yamal'
+INSERT INTO yamal (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 8;
+
+-- Вставка в таблицу 'meretoyaha'
+INSERT INTO meretoyaha (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 9;
+
+-- Вставка в таблицу 'nng'
+INSERT INTO nng (well_id, total_count, recorded_at)
+SELECT well_id, total_count, recorded_at 
+FROM temp_aggregated_counts 
+WHERE company_id = 10;
+```
+
+
+```
 ERROR:  relation "aggregated_counts" does not exist
 LINE 31: FROM aggregated_counts 
 ```
