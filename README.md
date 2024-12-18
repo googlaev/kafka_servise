@@ -1,4 +1,9 @@
 ```
+ERROR:  relation "aggregated_counts" does not exist
+LINE 31: FROM aggregated_counts 
+```
+
+```
 WITH aggregated_counts AS (
     SELECT 
         mc.well_id, 
