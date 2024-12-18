@@ -1,4 +1,26 @@
 ```
+SELECT
+  SUM(total_count) AS "Зимнее",
+  recorded_at
+FROM
+  hantos 
+WHERE
+  well_id IN (
+    -- напиши запрос что бы выводил список wellid и имя скавыажины по названию месторождения
+    SELECT
+      CAST(w.well_id AS bigint)
+    FROM
+      wells_and_clusters w
+      JOIN fields f ON w.field_name = f.field_name
+    WHERE
+      f.field_name = 'Зимнее' -- Замените $1 на нужное название месторождения
+  )
+GROUP BY
+  recorded_at;
+```
+
+
+```
 -- Создание временной таблицы
 CREATE TEMP TABLE temp_aggregated_counts (
     well_id BIGINT,
