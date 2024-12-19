@@ -1,4 +1,26 @@
 ```
+SELECT
+    DATE_TRUNC('minute', recorded_at) + INTERVAL '10 minutes' * (EXTRACT(MINUTE FROM recorded_at)::int / 10) AS interval_start,
+    AVG(total_count) AS average_total_count
+FROM
+    hantos
+WHERE
+    well_id IN (
+        SELECT
+            CAST(w.well_id AS bigint)
+        FROM
+            wells_and_clusters w
+            JOIN fields f ON w.field_name = f.field_name
+        WHERE
+            f.field_name = 'Зимнее'  -- Замените на нужное название месторождения
+    )
+GROUP BY
+    interval_start
+ORDER BY
+    interval_start;
+```
+
+```
 WITH aggregated_data AS (
     SELECT
         DATE_TRUNC('minute', recorded_at) AS minute,
