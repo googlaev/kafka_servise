@@ -2,6 +2,25 @@
 SELECT
     w.well_id,
     w.well_name,
+    w.cluster_name
+FROM
+    wells_and_clusters w
+WHERE
+    w.field_name = 'Зимнее'  -- Фильтруем по конкретному месторождению
+    AND w.well_id NOT IN (
+        SELECT
+            h.well_id
+        FROM
+            hantos h
+        WHERE
+            h.recorded_at >= NOW() - INTERVAL '30 minutes'  -- Данные обновлялись в последние 30 минут
+    );
+```
+
+```
+SELECT
+    w.well_id,
+    w.well_name,
     w.cluster_name,
     SUM(h.total_count) AS total_count,
     DATE_TRUNC('minute', h.recorded_at) AS recorded_at
