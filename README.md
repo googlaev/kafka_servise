@@ -1,4 +1,8 @@
 ```
+Status: 500. Message: db query error: pq: column w.well_idКрасноленинское does not exist
+
+```
+```
 ERROR:  operator does not exist: character varying = bigint
 LINE 9:     AND w.well_id NOT IN (
                           ^
