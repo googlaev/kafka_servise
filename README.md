@@ -1,4 +1,44 @@
 ```
+WITH aggregated_data AS (
+    SELECT
+        DATE_TRUNC('minute', recorded_at) AS minute,
+        SUM(total_count) AS total_count_sum
+    FROM
+        hantos 
+    WHERE
+        well_id IN (
+            SELECT
+                CAST(w.well_id AS bigint)
+            FROM
+                wells_and_clusters w
+                JOIN fields f ON w.field_name = f.field_name
+            WHERE
+                f.field_name = 'Зимнее'  -- Замените на нужное название месторождения
+        )
+    GROUP BY
+        minute
+),
+smoothed_data AS (
+    SELECT
+        minute,
+        total_count_sum,
+        AVG(total_count_sum) OVER (
+            ORDER BY minute 
+            ROWS BETWEEN 2 PRECEDING AND CURRENT ROW  -- Скользящее среднее за 3 значения
+        ) AS smoothed_value
+    FROM
+        aggregated_data
+)
+
+SELECT
+    minute,
+    smoothed_value
+FROM
+    smoothed_data
+ORDER BY
+    minute;
+```
+```
 SELECT
     DATE_TRUNC('minute', recorded_at) + INTERVAL '10 minutes' * (EXTRACT(MINUTE FROM recorded_at)::int / 10) AS interval_start,
     AVG(total_count) AS average_total_count
