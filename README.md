@@ -22,6 +22,49 @@ smoothed_data AS (
     SELECT
         minute,
         total_count_sum,
+        AVG(total_count_sum) OVER (
+            ORDER BY minute 
+            ROWS BETWEEN 3 PRECEDING AND CURRENT ROW  -- Учитываем 10 минут (3 минуты * 4)
+        ) AS average_last_10_minutes
+    FROM
+        aggregated_data
+)
+
+SELECT
+    DATE_TRUNC('minute', minute) AS minute,
+    average_last_10_minutes
+FROM
+    smoothed_data
+WHERE
+    minute >= NOW() - INTERVAL '10 minutes'  -- Фильтруем последние 10 минут
+ORDER BY
+    minute;
+```
+
+```
+WITH aggregated_data AS (
+    SELECT
+        DATE_TRUNC('minute', recorded_at) AS minute,
+        SUM(total_count) AS total_count_sum
+    FROM
+        hantos 
+    WHERE
+        well_id IN (
+            SELECT
+                CAST(w.well_id AS bigint)
+            FROM
+                wells_and_clusters w
+                JOIN fields f ON w.field_name = f.field_name
+            WHERE
+                f.field_name = 'Зимнее'  -- Замените на нужное название месторождения
+        )
+    GROUP BY
+        minute
+),
+smoothed_data AS (
+    SELECT
+        minute,
+        total_count_sum,
         AVG(total_count_sum) OVER (ORDER BY minute ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS smoothed_value
     FROM
         aggregated_data
