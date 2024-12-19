@@ -1,4 +1,9 @@
 ```
+SELECT sum(total_count),recorded_at  FROM meretoyaha 
+
+GROUP BY  recorded_at
+```
+```
 Status: 500. Message: db query error: pq: column w.well_idКрасноленинское does not exist
 
 ```
