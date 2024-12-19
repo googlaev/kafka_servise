@@ -1,4 +1,14 @@
 ```
+ERROR:  operator does not exist: character varying = bigint
+LINE 10:     hantos h ON w.well_id = h.well_id
+                                   ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts. 
+
+SQL-состояние: 42883
+Символ: 215
+```
+
+```
 SELECT
     w.well_id,
     w.well_name,
