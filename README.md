@@ -2,6 +2,36 @@
 WITH aggregated_data AS (
     SELECT
         DATE_TRUNC('minute', recorded_at) AS minute,
+        total_count
+    FROM
+        hantos 
+    WHERE
+        well_id IN (
+            SELECT
+                CAST(w.well_id AS bigint)
+            FROM
+                wells_and_clusters w
+                JOIN fields f ON w.field_name = f.field_name
+            WHERE
+                f.field_name = 'Зимнее'  -- Замените на нужное название месторождения
+        )
+)
+
+SELECT
+    minute,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY total_count) AS median_total_count
+FROM
+    aggregated_data
+GROUP BY
+    minute
+ORDER BY
+    minute;
+```
+
+```
+WITH aggregated_data AS (
+    SELECT
+        DATE_TRUNC('minute', recorded_at) AS minute,
         SUM(total_count) AS total_count_sum
     FROM
         hantos 
