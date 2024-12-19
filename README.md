@@ -1,6 +1,36 @@
 ```
 WITH aggregated_data AS (
     SELECT
+        DATE_TRUNC('minute', recorded_at) + INTERVAL '10 minutes' * (EXTRACT(MINUTE FROM recorded_at)::int / 10) AS interval_start,
+        total_count
+    FROM
+        hantos 
+    WHERE
+        well_id IN (
+            SELECT
+                CAST(w.well_id AS bigint)
+            FROM
+                wells_and_clusters w
+                JOIN fields f ON w.field_name = f.field_name
+            WHERE
+                f.field_name = 'Зимнее'  -- Замените на нужное название месторождения
+        )
+)
+
+SELECT
+    interval_start,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY total_count) AS median_total_count
+FROM
+    aggregated_data
+GROUP BY
+    interval_start
+ORDER BY
+    interval_start;
+```
+
+```
+WITH aggregated_data AS (
+    SELECT
         DATE_TRUNC('minute', recorded_at) AS minute,
         total_count
     FROM
