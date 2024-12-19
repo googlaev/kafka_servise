@@ -15,6 +15,46 @@ aggregated_data AS (
         meretoyaha
     GROUP BY
         recorded_at
+),
+final_data AS (
+    SELECT
+        ti.recorded_at,
+        COALESCE(ad.total_count_sum, 0) AS total_count_sum
+    FROM
+        time_intervals ti
+    LEFT JOIN
+        aggregated_data ad ON ti.recorded_at = ad.recorded_at
+)
+
+SELECT
+    recorded_at,
+    CASE
+        WHEN total_count_sum = 0 THEN LAG(total_count_sum) OVER (ORDER BY recorded_at)
+        ELSE total_count_sum
+    END AS total_count_sum
+FROM
+    final_data
+ORDER BY
+    recorded_at;
+```
+
+```
+WITH time_intervals AS (
+    SELECT
+        generate_series(
+            (SELECT MIN(DATE_TRUNC('minute', recorded_at)) FROM meretoyaha),
+            (SELECT MAX(DATE_TRUNC('minute', recorded_at)) FROM meretoyaha),
+            '1 minute'::interval
+        ) AS recorded_at
+),
+aggregated_data AS (
+    SELECT
+        DATE_TRUNC('minute', recorded_at) AS recorded_at,
+        SUM(total_count) AS total_count_sum
+    FROM
+        meretoyaha
+    GROUP BY
+        recorded_at
 )
 
 SELECT
