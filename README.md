@@ -1,4 +1,22 @@
 ```
+SELECT
+    w.well_id,
+    w.well_name,
+    w.cluster_name,
+    SUM(h.total_count) AS total_count,
+    DATE_TRUNC('minute', h.recorded_at) AS recorded_at
+FROM
+    wells_and_clusters w
+JOIN
+    hantos h ON w.well_id::text = h.well_id::text  -- Приведение типов к строке
+WHERE
+    w.field_name = 'Зимнее'  -- Фильтруем по месторождению
+GROUP BY
+    w.well_id, w.well_name, w.cluster_name, recorded_at
+ORDER BY
+    recorded_at, w.well_id;
+```
+```
 ERROR:  operator does not exist: character varying = bigint
 LINE 10:     hantos h ON w.well_id = h.well_id
                                    ^
