@@ -1,4 +1,9 @@
 ```
+Status: 500. Message: db query error: pq: OVER is not supported for ordered-set aggregate percentile_cont
+
+```
+
+```
 WITH time_intervals AS (
     SELECT
         generate_series(
