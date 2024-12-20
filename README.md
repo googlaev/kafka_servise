@@ -19,6 +19,45 @@ aggregated_data AS (
 final_data AS (
     SELECT
         ti.recorded_at,
+        COALESCE(ad.total_count_sum, 0) AS total_count_sum
+    FROM
+        time_intervals ti
+    LEFT JOIN
+        aggregated_data ad ON ti.recorded_at = ad.recorded_at
+)
+
+SELECT
+    recorded_at,
+    total_count_sum,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY total_count_sum) OVER (ORDER BY recorded_at ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS median_total_count
+FROM
+    final_data
+ORDER BY
+    recorded_at;
+```
+
+# Работает
+```
+WITH time_intervals AS (
+    SELECT
+        generate_series(
+            (SELECT MIN(DATE_TRUNC('minute', recorded_at)) FROM hantos),
+            (SELECT MAX(DATE_TRUNC('minute', recorded_at)) FROM hantos),
+            '3 minutes'::interval  -- Укажите нужный интервал, например, 3 минуты
+        ) AS recorded_at
+),
+aggregated_data AS (
+    SELECT
+        DATE_TRUNC('minute', recorded_at) AS recorded_at,
+        SUM(total_count) AS total_count_sum
+    FROM
+        hantos
+    GROUP BY
+        recorded_at
+),
+final_data AS (
+    SELECT
+        ti.recorded_at,
         COALESCE(ad.total_count_sum, 0) AS total_count_sum  -- Заполняем отсутствующие значения нулями
     FROM
         time_intervals ti
