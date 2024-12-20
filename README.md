@@ -30,12 +30,9 @@ SELECT
     recorded_at,
     total_count_sum,
     (SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY total_count_sum)
-     FROM final_data fd
-     WHERE fd.recorded_at <= f.recorded_at
-     ORDER BY fd.recorded_at
-     LIMIT 3) AS median_total_count
+     FROM final_data) AS median_total_count
 FROM
-    final_data f
+    final_data
 ORDER BY
     recorded_at;
 ```
