@@ -1,3 +1,35 @@
+
+```
+WITH time_intervals AS (
+    SELECT generate_series(
+        (SELECT MIN(recorded_at) FROM yamal),  -- Начало временного диапазона
+        NOW(),                                 -- Конец временного диапазона
+        INTERVAL '3 minutes'                   -- Шаг интервала
+    ) AS interval_start
+),
+aggregated_data AS (
+    SELECT
+        ti.interval_start AS recorded_at,
+        COALESCE(SUM(y.total_count), 0) AS total_sum -- Сумма total_count (если нет данных, ставим 0)
+    FROM
+        time_intervals ti
+    LEFT JOIN yamal y
+    ON y.recorded_at >= ti.interval_start 
+       AND y.recorded_at < ti.interval_start + INTERVAL '3 minutes'
+    GROUP BY
+        ti.interval_start
+    ORDER BY
+        ti.interval_start
+)
+SELECT
+    recorded_at AS time,   -- Grafana ожидает колонку `time`
+    total_sum AS value     -- Суммарное значение за интервал
+FROM
+    aggregated_data;
+
+```
+
+
 ```
 "well_id","total_count","recorded_at"
 "500240800",51,"2024-12-20 19:12:05.337803+05"
