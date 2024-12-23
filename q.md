@@ -1,4 +1,19 @@
 ```
+SELECT 
+    w.id AS well_id,
+    COALESCE(SUM(d.total_count), 0) AS total_sum
+FROM 
+    wtable w
+LEFT JOIN 
+    dtable d ON w.id = d.well_id 
+    AND d.recorded_at = '2024-12-20 19:12:05.337803+05'::timestamp with time zone
+GROUP BY 
+    w.id
+ORDER BY 
+    w.id;
+```
+
+```
 WITH time_intervals AS (
     SELECT
         generate_series(
