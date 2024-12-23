@@ -1,6 +1,5 @@
 chatgpt
 ```
--- Шаг 1. Создаём временные интервалы
 WITH time_intervals AS (
     SELECT generate_series(
         (SELECT MIN(recorded_at) FROM yamal),  -- Начало диапазона
@@ -8,26 +7,26 @@ WITH time_intervals AS (
         INTERVAL '3 minutes'                  -- Шаг времени
     ) AS recorded_at
 ),
-
--- Шаг 2. Привязываем данные к временным интервалам
 merged_data AS (
     SELECT
         ti.recorded_at,
-        COALESCE(y.total_count, 0) AS total_count  -- Если данных нет, используем 0
+        COALESCE(SUM(y.total_count), 0) AS total_sum  -- Если данных нет, используем 0
     FROM
         time_intervals ti
     LEFT JOIN
         yamal y
     ON
-        ti.recorded_at = y.recorded_at  -- Сопоставляем по времени
+        ti.recorded_at = y.recorded_at
+    GROUP BY
+        ti.recorded_at
+    ORDER BY
+        ti.recorded_at
 )
-
--- Шаг 3. Считаем сумму всех значений total_count
-SELECT 
-    SUM(total_count) AS total_sum
-FROM 
+SELECT
+    recorded_at AS time,   -- Grafana ожидает колонку с названием `time`
+    total_sum AS value     -- Значение суммы за интервал
+FROM
     merged_data;
-
 
 ```
 kersor
