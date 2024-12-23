@@ -1,4 +1,18 @@
 ```
+SELECT 
+    cluster_name,
+    SUM(message_count) AS total_messages  -- Предполагается, что у вас есть поле message_count
+FROM 
+    public.wells_and_clusters
+WHERE 
+    field_name = 'Новопортовское'
+GROUP BY 
+    cluster_name
+ORDER BY 
+    cluster_name;
+```
+
+```
 SELECT 	Distinct cluster_name
 	FROM public.wells_and_clusters
 	where field_name = 'Новопортовское'
