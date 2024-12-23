@@ -1,4 +1,11 @@
 ```
+SELECT 	Distinct cluster_name
+	FROM public.wells_and_clusters
+	where field_name = 'Новопортовское'
+	order by cluster_name;
+```
+
+```
 WITH time_intervals AS (
     SELECT
         generate_series(
