@@ -1,6 +1,6 @@
 chatgpt
 ```
--- Шаг 1. Создаём временные интервалы (например, с шагом 3 минуты)
+-- Шаг 1. Создаём временные интервалы
 WITH time_intervals AS (
     SELECT generate_series(
         (SELECT MIN(recorded_at) FROM yamal),  -- Начало диапазона
@@ -13,8 +13,7 @@ WITH time_intervals AS (
 merged_data AS (
     SELECT
         ti.recorded_at,
-        COALESCE(y.well_id, 0) AS well_id,  -- Если данных нет, используем 0
-        COALESCE(y.total_count, 0) AS total_count
+        COALESCE(y.total_count, 0) AS total_count  -- Если данных нет, используем 0
     FROM
         time_intervals ti
     LEFT JOIN
@@ -23,10 +22,12 @@ merged_data AS (
         ti.recorded_at = y.recorded_at  -- Сопоставляем по времени
 )
 
--- Шаг 3. Выбираем результат с отсутствующими значениями как 0
-SELECT *
-FROM merged_data
-ORDER BY recorded_at;
+-- Шаг 3. Считаем сумму всех значений total_count
+SELECT 
+    SUM(total_count) AS total_sum
+FROM 
+    merged_data;
+
 
 ```
 kersor
