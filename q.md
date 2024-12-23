@@ -6,30 +6,18 @@ WITH time_intervals AS (
         NOW(),
         INTERVAL '3 minutes'
     ) AS interval_start
-),
-aggregated_data AS (
-    SELECT
-        ti.interval_start AS recorded_at,
-        COALESCE(SUM(y.total_count), 0) AS total_sum
-    FROM
-        time_intervals ti
-    LEFT JOIN LATERAL (
-        SELECT total_count
-        FROM yamal
-        WHERE yamal.recorded_at >= ti.interval_start
-          AND yamal.recorded_at < ti.interval_start + INTERVAL '3 minutes'
-    ) y ON true
-    GROUP BY
-        ti.interval_start
-    ORDER BY
-        ti.interval_start
 )
 SELECT
-    recorded_at AS time,
-    total_sum AS value
+    ti.interval_start AS recorded_at,
+    COALESCE(SUM(y.total_count), 0) AS total_sum
 FROM
-    aggregated_data;
-
+    time_intervals ti
+LEFT JOIN yamal y ON y.recorded_at >= ti.interval_start
+                  AND y.recorded_at < ti.interval_start + INTERVAL '3 minutes'
+GROUP BY
+    ti.interval_start
+ORDER BY
+    ti.interval_start;
 ```
 ```
 "well_id","total_count","recorded_at"
