@@ -1,15 +1,17 @@
 ```
 SELECT 
-    cluster_name,
-    SUM(message_count) AS total_messages  -- Предполагается, что у вас есть поле message_count
+    wc.cluster_name,
+    SUM(y.total_count) AS total_messages
 FROM 
-    public.wells_and_clusters
+    public.wells_and_clusters wc
+JOIN 
+    public.yamal y ON wc.cluster_name = y.cluster_name  -- Предполагается, что есть поле cluster_name в обеих таблицах
 WHERE 
-    field_name = 'Новопортовское'
+    wc.field_name = 'Новопортовское'
 GROUP BY 
-    cluster_name
+    wc.cluster_name
 ORDER BY 
-    cluster_name;
+    wc.cluster_name;
 ```
 
 ```
