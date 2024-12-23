@@ -1,4 +1,33 @@
 ```
+WITH latest_records AS (
+    SELECT 
+        wc.cluster_name,
+        y.total_count,
+        y.recorded_at,
+        ROW_NUMBER() OVER (PARTITION BY wc.cluster_name ORDER BY y.recorded_at DESC) AS rn
+    FROM 
+        public.wells_and_clusters wc
+    JOIN 
+        public.yamal y ON wc.well_id = y.well_id::text 
+    WHERE 
+        wc.field_name = 'Новопортовское'
+)
+
+SELECT 
+    cluster_name,
+    SUM(total_count) AS total_messages,
+    MAX(recorded_at) AS last_recorded_at
+FROM 
+    latest_records
+WHERE 
+    rn = 1  -- Получаем только последние записи
+GROUP BY 
+    cluster_name
+ORDER BY 
+    cluster_name;
+```
+
+```
 SELECT 
     wc.cluster_name,
     SUM(y.total_count) AS total_messages
