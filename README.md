@@ -5,6 +5,22 @@ SELECT
 FROM 
     public.wells_and_clusters wc
 JOIN 
+    public.yamal y ON wc.well_id = y.well_id::text  -- Предполагается, что есть поле cluster_name в обеих таблицах
+WHERE 
+    wc.field_name = 'Новопортовское'
+GROUP BY 
+    wc.cluster_name
+ORDER BY 
+    wc.cluster_name;
+```
+
+```
+SELECT 
+    wc.cluster_name,
+    SUM(y.total_count) AS total_messages
+FROM 
+    public.wells_and_clusters wc
+JOIN 
     public.yamal y ON wc.cluster_name = y.cluster_name  -- Предполагается, что есть поле cluster_name в обеих таблицах
 WHERE 
     wc.field_name = 'Новопортовское'
