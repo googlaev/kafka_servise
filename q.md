@@ -1,4 +1,30 @@
 ```
+WITH time_intervals AS (
+    -- Генерация временных интервалов
+    SELECT generate_series(
+        (SELECT MIN(recorded_at) FROM yamal), -- Минимальная временная метка
+        (SELECT MAX(recorded_at) FROM yamal), -- Максимальная временная метка
+        '3 minutes'::interval                -- Интервал 3 минуты
+    ) AS recorded_at
+)
+SELECT
+    ti.recorded_at,
+    COALESCE(SUM(y.total_count), 0) AS total_count_sum
+FROM
+    time_intervals ti
+LEFT JOIN
+    yamal y 
+    ON y.recorded_at >= ti.recorded_at
+    AND y.recorded_at < ti.recorded_at + interval '3 minutes'
+GROUP BY
+    ti.recorded_at
+ORDER BY
+    ti.recorded_at;
+
+```
+
+
+```
 SELECT 
     w.id AS well_id,
     COALESCE(SUM(d.total_count), 0) AS total_sum
