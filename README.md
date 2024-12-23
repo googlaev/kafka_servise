@@ -1,6 +1,23 @@
 ```
 SELECT 
     wc.cluster_name,
+    DATE_TRUNC('minute', y.recorded_at) AS interval_start,  -- Округляем до минуты
+    SUM(y.total_count) AS total_messages
+FROM 
+    public.wells_and_clusters wc
+JOIN 
+    public.yamal y ON wc.well_id = y.well_id::text 
+WHERE 
+    wc.field_name = 'Новопортовское'
+GROUP BY 
+    wc.cluster_name, interval_start
+ORDER BY 
+    wc.cluster_name, interval_start;
+```
+
+```
+SELECT 
+    wc.cluster_name,
     SUM(y.total_count) AS total_messages
 FROM 
     public.wells_and_clusters wc
