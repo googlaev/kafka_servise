@@ -1,3 +1,37 @@
+```
+EXPLAIN ANALYZE
+WITH time_intervals AS (
+    SELECT generate_series(
+        NOW() - INTERVAL '1 hour',
+        NOW(),
+        INTERVAL '3 minutes'
+    ) AS interval_start
+),
+aggregated_data AS (
+    SELECT
+        ti.interval_start AS recorded_at,
+        COALESCE(SUM(y.total_count), 0) AS total_sum
+    FROM
+        time_intervals ti
+    LEFT JOIN LATERAL (
+        SELECT total_count
+        FROM yamal
+        WHERE yamal.recorded_at >= ti.interval_start
+          AND yamal.recorded_at < ti.interval_start + INTERVAL '3 minutes'
+    ) y ON true
+    GROUP BY
+        ti.interval_start
+    ORDER BY
+        ti.interval_start
+)
+SELECT
+    recorded_at AS time,
+    total_sum AS value
+FROM
+    aggregated_data;
+
+```
+
 
 ```
 WITH time_intervals AS (
