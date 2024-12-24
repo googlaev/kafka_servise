@@ -1,4 +1,8 @@
 ```
+ERROR:  unit "10 minutes" not recognized for type timestamp with time zone 
+
+```
+```
 SELECT 
     DATE_TRUNC('10 minutes', y.recorded_at) AS time_interval,  -- Округляем до 10 минут
     SUM(y.total_count) AS total_messages
