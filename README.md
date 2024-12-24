@@ -1,4 +1,19 @@
 ```
+SELECT 
+    DATE_TRUNC('10 minutes', y.recorded_at) AS time_interval,  -- Округляем до 10 минут
+    SUM(y.total_count) AS total_messages
+FROM 
+    public.yamal y
+WHERE 
+    y.recorded_at >= NOW() - INTERVAL '1 hour'  -- Указываем временной диапазон, например, за последний час
+GROUP BY 
+    time_interval
+ORDER BY 
+    time_interval;
+```
+
+
+```
 WITH latest_records AS (
     SELECT 
         wc.cluster_name,
