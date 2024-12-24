@@ -1,4 +1,22 @@
 ```
+INSERT INTO history (quantity)
+SELECT 
+    SUM(y.total_count) AS total_messages
+FROM 
+    public.yamal y
+WHERE 
+    y.recorded_at >= NOW() - INTERVAL '10 minutes';
+```
+
+```
+CREATE TABLE history (
+    id SERIAL PRIMARY KEY,          -- Уникальный идентификатор для каждой записи
+    quantity NUMERIC NOT NULL,      -- Поле для числового значения (количество)
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Поле для даты и времени, автоматически заполняется текущим временем
+);
+```
+
+```
 SELECT 
     DATE_TRUNC('minute', y.recorded_at) + INTERVAL '10 minutes' * FLOOR(EXTRACT(MINUTE FROM y.recorded_at) / 10) AS time_interval,
     SUM(y.total_count) AS total_messages
