@@ -1,4 +1,19 @@
 ```
+SELECT 
+    DATE_TRUNC('minute', y.recorded_at) + INTERVAL '10 minutes' * FLOOR(EXTRACT(MINUTE FROM y.recorded_at) / 10) AS time_interval,
+    SUM(y.total_count) AS total_messages
+FROM 
+    public.yamal y
+WHERE 
+    y.recorded_at >= NOW() - INTERVAL '1 hour'  -- Указываем временной диапазон, например, за последний час
+GROUP BY 
+    time_interval
+ORDER BY 
+    time_interval;
+```
+
+
+```
 ERROR:  unit "10 minutes" not recognized for type timestamp with time zone 
 
 ```
