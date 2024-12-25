@@ -1,4 +1,25 @@
 ```
+SELECT 
+--COALESCE(SUM(total_count),0) AS "Шингинское"
+sum(total_count) AS "Шингинское",recorded_at
+FROM vostok  
+WHERE well_id IN (
+-- напиши запрос что бы выводил список wellid и имя скавыажины по названию месторождения
+SELECT 
+     CAST(w.well_id AS bigint)  
+    
+FROM 
+    wells_and_clusters w
+JOIN 
+    fields f ON w.field_name = f.field_name
+WHERE 
+    f.field_name = 'Шингинское'  -- Замените $1 на нужное название месторождения
+
+)
+GROUP BY  recorded_at;
+```
+
+```
 INSERT INTO history (quantity)
 SELECT 
     SUM(y.total_count) AS total_messages
