@@ -1,4 +1,9 @@
 ```
+Status: 500. Message: db query error: pq: unit "10 minutes" not recognized for type timestamp with time zone
+
+```
+
+```
 WITH well_ids AS (
     SELECT 
         CAST(w.well_id AS bigint) AS well_id
