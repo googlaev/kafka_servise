@@ -1,4 +1,42 @@
 ```
+WITH well_ids AS (
+    SELECT 
+        CAST(w.well_id AS bigint) AS well_id
+    FROM 
+        wells_and_clusters w
+    JOIN 
+        fields f ON w.field_name = f.field_name
+    WHERE 
+        f.field_name = 'Шингинское'  -- Замените на нужное название месторождения
+),
+total_counts AS (
+    SELECT 
+        v.recorded_at,
+        SUM(v.total_count) AS total_count
+    FROM 
+        vostok v
+    WHERE 
+        v.well_id IN (SELECT well_id FROM well_ids)
+    GROUP BY 
+        v.recorded_at
+),
+numbered_counts AS (
+    SELECT 
+        recorded_at,
+        total_count,
+        ROW_NUMBER() OVER (ORDER BY recorded_at) AS rn
+    FROM 
+        total_counts
+)
+SELECT 
+    AVG(total_count) AS average_total_count
+FROM 
+    numbered_counts
+GROUP BY 
+    (rn - 1) / 3;  -- Группировка по интервалам в 3 значения
+```
+
+```
 SELECT 
 --COALESCE(SUM(total_count),0) AS "Шингинское"
 sum(total_count) AS "Шингинское",recorded_at
