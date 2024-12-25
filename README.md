@@ -11,6 +11,37 @@ WITH well_ids AS (
 ),
 total_counts AS (
     SELECT 
+        DATE_TRUNC('10 minutes', v.recorded_at) AS time_interval,  -- Округляем до 10 минут
+        SUM(v.total_count) AS total_count
+    FROM 
+        vostok v
+    WHERE 
+        v.well_id IN (SELECT well_id FROM well_ids)
+    GROUP BY 
+        time_interval
+)
+SELECT 
+    time_interval,
+    total_count
+FROM 
+    total_counts
+ORDER BY 
+    time_interval;  -- Сортируем по временной метке
+```
+
+```
+WITH well_ids AS (
+    SELECT 
+        CAST(w.well_id AS bigint) AS well_id
+    FROM 
+        wells_and_clusters w
+    JOIN 
+        fields f ON w.field_name = f.field_name
+    WHERE 
+        f.field_name = 'Шингинское'  -- Замените на нужное название месторождения
+),
+total_counts AS (
+    SELECT 
         v.recorded_at,
         SUM(v.total_count) AS total_count
     FROM 
