@@ -1,4 +1,18 @@
 ```
+SELECT 
+    DATE_TRUNC('minute', recorded_at) + INTERVAL '1 minute' * (EXTRACT(MINUTE FROM recorded_at)::int / 10 * 10) AS time_interval,  -- Округляем до 10 минут
+    SUM(total_count) AS total_messages
+FROM 
+    vostok
+WHERE 
+    recorded_at >= NOW() - INTERVAL '1 hour'  -- Указываем временной диапазон, например, за последний час
+GROUP BY 
+    time_interval
+ORDER BY 
+    time_interval;  -- Сортируем по временной метке
+```
+
+```
 CREATE TABLE history (
     id SERIAL PRIMARY KEY,                -- Уникальный идентификатор для каждой записи
     well_id BIGINT NOT NULL,              -- Поле для идентификатора скважины
