@@ -1,4 +1,10 @@
 ```
+ERROR:  column "well_id" does not exist
+LINE 1: SELECT DISTINCT  well_id,STRING_AGG(well_name,", ")
+```
+
+
+```
 SELECT 
     column1,
     STRING_AGG(column2, ', ') AS combined_values
