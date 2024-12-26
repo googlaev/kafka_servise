@@ -1,4 +1,23 @@
 ```
+SELECT sum(total_count) AS "Количество",recorded_at  FROM vostok  
+WHERE well_id IN (
+-- напиши запрос что бы выводил список wellid и имя скавыажины по названию месторождения
+SELECT 
+     CAST(w.well_id AS bigint)  
+    
+FROM 
+    wells_and_clusters w
+JOIN 
+    fields f ON w.field_name = f.field_name
+WHERE 
+    well_name = '$scvazhina' -- Замените $1 на нужное название месторождения
+where field_name = 'Арчинское' and cluster_name = '0' and well_name = "";
+)
+GROUP BY  recorded_at;
+```
+
+
+```
 ERROR:  column "well_id" does not exist
 LINE 1: SELECT DISTINCT  well_id,STRING_AGG(well_name,", ")
 ```
