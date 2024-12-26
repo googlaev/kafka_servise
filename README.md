@@ -1,4 +1,18 @@
 ```
+SELECT 
+    well_id,
+    SUM(total_count) AS total_messages
+FROM 
+    vostok
+WHERE 
+    recorded_at >= NOW() - INTERVAL '10 minutes'  -- Фильтруем записи за последние 10 минут
+GROUP BY 
+    well_id
+ORDER BY 
+    well_id;  -- Сортируем по well_id
+```
+
+```
 "well_id","total_count","recorded_at"
 "8310056600",5,"2024-12-24 01:12:01.647642+05"
 "8310081000",14,"2024-12-24 01:12:01.647642+05"
