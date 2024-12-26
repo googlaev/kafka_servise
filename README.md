@@ -1,4 +1,28 @@
 ```
+SELECT 
+    SUM(total_count) AS "Количество", 
+    recorded_at  
+FROM 
+    vostok  
+WHERE 
+    well_id IN (
+        SELECT 
+            CAST(w.well_id AS bigint)  
+        FROM 
+            wells_and_clusters w
+        JOIN 
+            fields f ON w.field_name = f.field_name
+        WHERE 
+            f.field_name = 'Арчинское' 
+            AND w.cluster_name = '0' 
+            AND w.well_name = '120'  -- Указанное имя скважины
+    ) 
+GROUP BY  
+    recorded_at;
+```
+
+
+```
 SELECT sum(total_count) AS "Количество",recorded_at  FROM vostok  
 WHERE well_id IN (
 -- напиши запрос что бы выводил список wellid и имя скавыажины по названию месторождения
