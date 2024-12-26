@@ -1,4 +1,9 @@
 ```
+	where field_name = 'Арчинское' and cluster_name = '0';
+```
+
+
+```
 SELECT 
     DATE_TRUNC('minute', recorded_at) + INTERVAL '1 minute' * (EXTRACT(MINUTE FROM recorded_at)::int / 10 * 10) AS time_interval,  -- Округляем до 10 минут
     SUM(total_count) AS total_messages
