@@ -1,4 +1,12 @@
 ```
+CREATE TABLE history (
+    id SERIAL PRIMARY KEY,                -- Уникальный идентификатор для каждой записи
+    well_id BIGINT NOT NULL,              -- Поле для идентификатора скважины
+    total_messages NUMERIC NOT NULL,      -- Поле для хранения суммы сообщений
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Поле для даты и времени, автоматически заполняется текущим временем
+);
+```
+```
 INSERT INTO history (well_id, total_messages, recorded_at)
 SELECT 
     well_id,
