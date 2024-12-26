@@ -1,4 +1,14 @@
 ```
+SELECT 
+    column1,
+    STRING_AGG(column2, ', ') AS combined_values
+FROM 
+    your_table
+GROUP BY 
+    column1;
+```
+
+```
 	where field_name = 'Арчинское' and cluster_name = '0';
 ```
 
