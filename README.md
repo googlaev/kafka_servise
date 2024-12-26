@@ -1,4 +1,20 @@
 ```
+INSERT INTO history (well_id, total_messages, recorded_at)
+SELECT 
+    well_id,
+    SUM(total_count) AS total_messages,
+    CURRENT_TIMESTAMP AS recorded_at  -- Текущее время
+FROM 
+    vostok
+WHERE 
+    recorded_at >= NOW() - INTERVAL '10 minutes'  -- Фильтруем записи за последние 10 минут
+GROUP BY 
+    well_id
+ORDER BY 
+    well_id;  -- Сортируем по well_id
+```
+
+```
 SELECT 
     well_id,
     SUM(total_count) AS total_messages
